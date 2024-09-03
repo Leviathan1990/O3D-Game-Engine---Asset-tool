@@ -19,6 +19,12 @@ Installation
 This program requires .net 4.5 to run!
 For more info, please read the attached documentation.
 
+Important notes
+=
+This tool is an in development beta build. The main functions are all working,
+but need to fix tons of bugs, annd more and more functions (For example a parser 
+for the classes section files).
+
 Contact
 =
 - Discord:  https://discord.gg/7RbzqN9
