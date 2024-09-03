@@ -1,12 +1,5 @@
-*/	
-*	The Outforce - O3D Game Engine Asset tool
-* 	Changelog
-* 	Developed by: Krisztian Kispeti
-*	Location: Kaposvár, HU.
-*	Contact: krisztiankispeti1990@gmail.com
-* /
-
 // Introduce
+=
 This program was designed for the asset container archives (*.box and *.opf).
 With this tool you can access the contents of these archives, extract them, build
 them.
@@ -22,6 +15,7 @@ Regarding script files you can read, edit and save them at specific destination.
 More information in the documentation.pdf file.
 
 // Installation
+=
 This program requires .net 4.5 to run!
 For more info, please read the attached documentation.
 
@@ -31,6 +25,7 @@ Moddb:
 Reshax:
 
 Special thanks to:
+=
 icons8 for free icons
 
 Ico by: ailogomaker io
