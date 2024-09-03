@@ -9,10 +9,13 @@ There are two ways for extraction: Selected file, and multiple (entire archive).
 You can open images, script files via my tool stored in the archive with out any
 extraction. Furthermore, you can export the script files too and use them in your
 - for example- new maps.
+- or update the contents of the *.box archives, especially the Music.box or the
+Campaigns_Movies.box archives with more content, if you really want to design
+campaign maps or create more tutorial maps.
 
-Regarding script files you can read, edit and save them at specific destination.
+- Regarding script files you can read, edit and save them at specific destination.
 
-More information in the documentation.pdf file.
+More information in the attached documentation.pdf file.
 
 Installation
 =
