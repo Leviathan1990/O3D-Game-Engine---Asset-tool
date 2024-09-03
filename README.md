@@ -19,10 +19,11 @@ Installation
 This program requires .net 4.5 to run!
 For more info, please read the attached documentation.
 
-//Contact
-- Discord: https://discord.gg/7RbzqN9
-- Moddb:  https://www.moddb.com/games/the-outforce
-- Reshax:
+Contact
+=
+- Discord:  https://discord.gg/7RbzqN9
+- Moddb:    https://www.moddb.com/games/the-outforce
+- Reshax:   https://reshax.com/profile/390-krisztian1990/
 
 Special thanks to:
 =
