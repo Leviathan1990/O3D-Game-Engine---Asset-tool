@@ -25,6 +25,10 @@ Contact
 - Moddb:    https://www.moddb.com/games/the-outforce
 - Reshax:   https://reshax.com/profile/390-krisztian1990/
 
+Download
+=
+- Reshax site:  https://reshax.com/profile/390-krisztian1990/
+
 Special thanks to:
 =
 icons8 for free icons
