@@ -1,55 +1,82 @@
-﻿using System;
-using System.Net;
+/*  Welcome screen code
+ * 
+ *  The Outforce O3D Game Engine Asset Tool.
+ *  Designed by: Krisztian Kispeti
+ *  Location: Kaposvár, HU.
+ *  Contact:
+ */
+using System;
 using System.Net.Http;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ProgBarMechanism;
 
 namespace AssetTool
 {
     public partial class Splash : Form
     {
+        private Form2 form2;
+
         public Splash()
         {
             InitializeComponent();
+            form2 = new Form2();
         }
 
         private async void Splash_Load(object sender, EventArgs e)
         {
+            form2.TopMost = true;
+            form2.Show();
+            form2.BringToFront();
+
+            Worker.InitializeProgressBar(form2.ProgressBar2, 100);
+
             string changelogPath = @"Changelog.txt";
             string linkPath = @"Dat\Program\Links.txt";
-            string webNewsUrl = "https://raw.githubusercontent.com/Leviathan1990/O3D-Game-Engine---Asset-tool/main/News";                                             // Live news
-            string ProgVersionURL = "https://raw.githubusercontent.com/Leviathan1990/O3D-Game-Engine---Asset-tool/main/Info";                               // Program version from Github
+            string webNewsUrl = "https://raw.githubusercontent.com/Leviathan1990/O3D-Game-Engine---Asset-tool/main/News";
+            string ProgVersionURL = "https://raw.githubusercontent.com/Leviathan1990/O3D-Game-Engine---Asset-tool/main/Info";
 
-            if (File.Exists(changelogPath) && File.Exists(linkPath))            //  Check: Files are exists
+            if (File.Exists(changelogPath) && File.Exists(linkPath))
             {
                 try
                 {
-                    richTextBox2.Text = File.ReadAllText(changelogPath);        //  Load the content of the Changelog.txt file to richTextBox2
-                    richTextBox3.Text = File.ReadAllText(linkPath);             //  Load the content of the Links.txt to richTextBox3
+                    //Loading files and updating progressBar
+                    richTextBox2.Text = File.ReadAllText(changelogPath);
+                    Worker.UpdateProgressBar(form2.ProgressBar2, 25);
+
+                    richTextBox3.Text = File.ReadAllText(linkPath);
+                    Worker.UpdateProgressBar(form2.ProgressBar2, 25);
 
                     using (HttpClient client = new HttpClient())
                     {
                         string webNewsContent = await client.GetStringAsync(webNewsUrl);
-                        string VresionURL = await client.GetStringAsync(ProgVersionURL);
                         richTextBox4.Text = webNewsContent;
-                        richTextBox1.Text = VresionURL;
+                        Worker.UpdateProgressBar(form2.ProgressBar2, 25);
+
+                        string VersionContent = await client.GetStringAsync(ProgVersionURL);
+                        richTextBox1.Text = VersionContent;
+                        Worker.UpdateProgressBar(form2.ProgressBar2, 25);
                     }
 
+                    await Task.Delay(600);
+
+                    // Check progressBar finnished loading, then close form2.
+                    if (form2.ProgressBar2.Value >= form2.ProgressBar2.Maximum)
+                    {
+                        form2.Close();
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An unknown error has occured. Can't read one of the files, or fetch web content.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("An unknown error has occured. \n Can't read one of the files, or fetch web content.\n Check your internet connection! \n Program works in offline mode now.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    form2.Close();
                 }
             }
             else
             {
                 MessageBox.Show("One or both of the files cannot be found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                form2.Close();
             }
         }
     }
