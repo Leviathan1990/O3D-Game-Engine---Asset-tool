@@ -1,0 +1,65 @@
+{Version V1.2}
+[ADDITIONS:]
+
++	O3D Engine tool Updater has been added!
++	Welcome screen has been added.
++	Live web feed has been added!
++	Media center has been added!
++	Image Inspector now displays mouse positions (x,y).
++	Keep aspect ration function has been finally implemented.
+
+[IMPROVEMENTS]
+
++	Updated image size function.
++	ProgressBar
++	Live web news
+
+[FIXES:]
+
+*	An aspect ratio-related bug has been fixed.
+*	Image size-related issue has been eliminated.
+*	Fixed a progressbar-related issue when loading *.box
+archives.
+
+[KNOWING ISSUES]
+
+!	There is an unknown problem with the progress bar,
+when trying to load the *.opf archive. [Investigation in progress]
+
+// ---- END OF VERSION 1.2 ---- //
+// ---- PREVIOUS VERSIONS ---- //
+
+{Version V1.1}
+[ADDITIONS:]
++ Added double click event handler for the treeView component.
++ Added double click support for the *.opf archive
++ Added extraction function for the *.opf archive
++ Added mouse event handler function for the Image Inspector.
++ Added selected filetype box.
++ Added Finder.
++ Added Filelist generator for the opened archive(s).
+
+[FIXES:]
+*Fixed a bug that caused freeze after the selected image in the Image Inspector
+is rotated and then zoom-ed.
+* Improved the code, so the program can correctly display the name and size (x,y) of 
+the selected image from treeView1 in PictureBox ( Form6).
+
+[KNOWING ISSUES:]
+-	There is a bug in the Outforce Worker (ProgressBar) code will be fixed in 
+the next update!
+-	There are numerous errors in the Finder's code that will be fixed in the up-
+coming update! 
+
+// ---- END OF VERSION 1.1 ---- //
+//---- PREVIOUS VERSIONS ----//
+
+{Version V1.0}
+
++	Initial edition
+Full support for *.box archives (Extract, Add / replace files, folders)
++	Single / entire archive extraction
++ Support for load/read and extract the .opf archive.
+
++	Archive save fixed
++ 	Add file(s) to the selected Node (folder) now fully implemented.
