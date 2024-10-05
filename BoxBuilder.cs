@@ -262,6 +262,9 @@ namespace AssetTool
     }
 }
 
+//Info: BoxBuilder.cs uses the NullTerminator.cs, BoxStruct.cs and NodeName.cs files
+
+
 //TODO
 
 // fix&Implement folder and subfolder function!
