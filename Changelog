@@ -1,4 +1,13 @@
-{Version V1.2}
+{Version V1.2.1 beta}
+
+[NEW!]
+Improvements:
++	BoxBuilder has been updated, now can't create a new *box file if
+files aren't added to treeView component.
+Fixes:
+*	Fixed: No program restart is required after creating a new archive
+
+//Previous versions
 
 [NEW!]
 2024.10.03:
