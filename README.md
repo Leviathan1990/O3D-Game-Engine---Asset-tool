@@ -45,10 +45,9 @@ Download
 
 Special thanks to:
 =
-icons8 for free icons
-
+icons8 for free icon
 Ico by: ailogomaker io
 
 Craft for testing my tools
-
+Emenesu for help me multiple times in coding.
 zoom-platform for re-releasing and updating the game.
