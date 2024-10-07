@@ -28,7 +28,7 @@ For more info, please read the attached documentation.
 Important notes
 =
 This tool is an in development beta build. The main functions are all working,
-but need to fix tons of bugs, annd more and more functions (For example a parser 
+but need to fix tons of bugs, add more and more functions (For example a parser 
 for the classes section files).
 
 Contact
@@ -36,12 +36,12 @@ Contact
 - Discord:  https://discord.gg/7RbzqN9
 - Moddb:    https://www.moddb.com/games/the-outforce
 - Reshax:   https://reshax.com/profile/390-krisztian1990/
-- Web: www.theoutforce.hu
+- Web:      www.theoutforce.hu
 
 Download
 =
 - Reshax site:  https://reshax.com/profile/390-krisztian1990/
-- www.theoutforce.hu
+- My Website: www.theoutforce.hu
 
 Special thanks to:
 =
