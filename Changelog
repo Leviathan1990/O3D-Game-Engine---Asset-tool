@@ -1,6 +1,6 @@
 {Version V1.2.1 beta}
 
-[NEW!]
+[NEW!] 2024.10.07, 16:00
 Improvements:
 +	BoxBuilder has been updated, now can't create a new *box file if
 files aren't added to treeView component.
