@@ -84,49 +84,70 @@ namespace AssetTool
         }
 
         private void WriteFilesToArchive(BinaryWriter writer, TreeNodeCollection nodes)
+{
+    // List of metadata containing information about files and directories
+    List<(string filename, long offset, int size)> metaDataList = new List<(string, long, int)>();
+
+    // Write content and collect metadata
+    WriteContent(writer, nodes, metaDataList);
+
+    // Starting offset of metadata
+    long directoryOffset = writer.BaseStream.Position;
+
+    // Write the number of files (4 bytes)
+    writer.Write(metaDataList.Count);
+
+    // Write all metadata
+    foreach (var metaData in metaDataList)
+    {
+        // Filename (terminated with a null character)
+        writer.Write(Encoding.ASCII.GetBytes(metaData.filename));
+        writer.Write((byte)0);  // Null terminator at the end of the filename
+
+        // File offset (4 bytes)
+        writer.Write((int)metaData.offset);
+
+        // File size (4 bytes)
+        writer.Write((int)metaData.size);
+    }
+
+    // Finally, write the directory offset (4 bytes)
+    writer.Write((int)directoryOffset);
+}
+
+// Recursive function to write file and directory contents
+private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(string filename, long offset, int size)> metaDataList)
+{
+    foreach (TreeNode node in nodes)
+    {
+        string fullPath = node.Tag.ToString();
+
+        if (Directory.Exists(fullPath)) // Directory handling
         {
-            List<(string filename, long offset, int size)> metaDataList = new List<(string, long, int)>();
+            // Recursive call for files and subdirectories within the directory
+            WriteContent(writer, node.Nodes, metaDataList);
+        }
+        else if (File.Exists(fullPath)) // File handling
+        {
+            FileInfo fileInfo = new FileInfo(fullPath);
 
-            // First write contents.
-            foreach (TreeNode node in nodes)
+            // Write file content to the archive
+            long currentOffset = writer.BaseStream.Position;
+            using (FileStream fs = new FileStream(fullPath, FileMode.Open))
             {
-                string fullPath = node.Tag.ToString();
-
-                if (File.Exists(fullPath))
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    FileInfo fileInfo = new FileInfo(fullPath);
-
-                    // Writing file content.
-                    long currentOffset = writer.BaseStream.Position;
-                    using (FileStream fs = new FileStream(fullPath, FileMode.Open))
-                    {
-                        byte[] buffer = new byte[4096];
-                        int bytesRead;
-                        while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            writer.Write(buffer, 0, bytesRead);
-                        }
-                    }
-
-                    // Metaadatok for storing for writing.
-                    metaDataList.Add((node.Text, currentOffset, (int)fileInfo.Length));
+                    writer.Write(buffer, 0, bytesRead);
                 }
             }
 
-            // metadatas at the end of the file
-            writer.Write(nodes.Count);  // Extra 4 bytes for storing files
-
-            foreach (var metaData in metaDataList)
-            {
-                writer.Write(Encoding.ASCII.GetBytes(metaData.filename));
-                writer.Write((byte)0);  // Null terminator after filename
-                writer.Write((int)metaData.offset);  // File start offset
-                writer.Write((int)metaData.size);    // File size
-
-                writer.Write((int)metaData.size);
-            }
+            // Add file metadata to the list
+            metaDataList.Add((node.FullPath, currentOffset, (int)fileInfo.Length));
         }
-
+    }
+}
         private void button6_Click(object sender, EventArgs e)
         {
             using (var newFolderDialog = new NodeName(true)) 
