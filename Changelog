@@ -1,4 +1,11 @@
-{Version V1.2.1 beta}
+{Version V1.2.2 beta}
+[NEW!] 2024.10.08, 15:24
+
+Improvements: 
++ BoxBuilder has been updated, and a small checker code has been added which will scan your new MapData.box archive
+for Skirmish maps, and it will warn you, if you forget to add all the necessary file(s) in your new archive.
+
+//Previous versions.
 
 [NEW!] 2024.10.07, 16:00
 Improvements:
