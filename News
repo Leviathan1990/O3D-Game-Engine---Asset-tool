@@ -1,10 +1,18 @@
-20.10.08, 15:21:
-Project Improvements.
+2024.10.10, 19:55:
+Project improvements:
+Finally, I managed to fix the treeView-related node(s) (folder(s), and childnode(s) (subfolder(s) issues. You can create *.box archives that contains
+file(s) folder(s) and subfolder(s)! You can also remove all the items (files) you added in the treeView components, remove selected file and / or the
+selected folder(s) or subfolder(s) too! I also improved BoxBuilder with a richTextBox component which will warn you anytime if a file is missiong or
+an error occured, and you can see what file(s) and folder(s) or subfolder(s) you have created and created the archive well! The only part of this
+code that will be fixed and improved the MapData editor mode. More info soon. Stay tuned, Cadets!
+
+2024.10.08, 15:21:
+Project Improvements:
 I have almost finished the implementation of the BoxBuilder tab, and added a MapData.box checker. It will be useful, if you want to design Skirmish maps.
 It will warn you if you forgot to add some necessary file(s) for your new skirmish archive.
 
 2024.10.03, 17:33:
-Project improvements.
+Project improvements:
 Hello, guys again! I started to implement the New project form, which will allow you to make folders and subfolders (nodes and childnodes) if you want to
 make a new *.box archive. This program is much more powerful than my previous tools! Also working on a fix for the Outforce Download Center regarding the
 SSPI-related issue.
