@@ -1,4 +1,12 @@
-﻿using OutforceFileStruct;
+/*  BoxBuilder form
+ *  
+ *  The Outforce O3D Engine Asset Tool.
+ *  Designed by: Krisztian Kispeti
+ *  Location: Kaposvár, HU.
+ *  Contact:
+ */
+
+using OutforceFileStruct;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
