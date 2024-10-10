@@ -41,7 +41,7 @@ namespace AssetTool
         private void LogToRichTextBox(string message)
         {
             richTextBox1.AppendText(message + Environment.NewLine);
-            richTextBox1.ScrollToCaret();  // Automatically scroll to the latest entry
+            richTextBox1.ScrollToCaret();                                        // Automatically scroll to the latest entry
         }
 
         private void AddDirectoryToTreeView(string dirPath, TreeNodeCollection nodes)
@@ -213,6 +213,7 @@ namespace AssetTool
                     }
 
                     UpdateFileSizeLabel();
+                    UpdateFileCountLabel();
 
                     if (radioButton2.Checked)
                     {
@@ -220,6 +221,51 @@ namespace AssetTool
                     }
                 }
             }
+        }
+
+        private int CountFiles(TreeNodeCollection nodes)
+        {
+            int count = 0;
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Nodes.Count == 0)
+                {
+                    count++;
+                }
+
+                else
+                {
+                    count += CountFiles(node.Nodes);
+                }
+            }
+            return count;
+        }
+
+        private void UpdateSelectedFileSizeLabel()
+        {
+            if (treeView1.SelectedNode != null && treeView1.SelectedNode.Nodes.Count == 0) // Check if is there selected file.
+            {
+                string filePath = treeView1.SelectedNode.Tag.ToString();
+                if (File.Exists(filePath))
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    toolStripLabel6.Text = $": {fileInfo.Length} bytes";
+                }
+                else
+                {
+                    toolStripLabel6.Text = "Selected file not found.";
+                }
+            }
+            else
+            {
+                toolStripLabel6.Text = "No file selected.";
+            }
+        }
+
+        private void UpdateFileCountLabel()
+        {
+            int fileCount = CountFiles(treeView1.Nodes);
+            toolStripLabel4.Text = $"{fileCount}";
         }
 
         private void UpdateFileSizeLabel()
@@ -290,7 +336,7 @@ namespace AssetTool
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-
+            UpdateSelectedFileSizeLabel();
         }
 
         private void button3_Click(object sender, EventArgs e)
