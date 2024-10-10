@@ -1,9 +1,10 @@
-/*  BoxBuilder form
- *  
+/*  Outforce BoxBuilder.cs
+ * 
  *  The Outforce O3D Engine Asset Tool.
  *  Designed by: Krisztian Kispeti
  *  Location: Kaposvár, HU.
- *  Contact:
+ *  Contact: admin@theoutforce.hu
+ *  Website: www.theoutforce.hu
  */
 
 using OutforceFileStruct;
@@ -34,24 +35,28 @@ namespace AssetTool
             treeView1.Nodes.Clear();
             UpdateFileSizeLabel();
             textBox1.Clear();
+            radioButton1.Checked = true;
+        }
+
+        private void LogToRichTextBox(string message)
+        {
+            richTextBox1.AppendText(message + Environment.NewLine);
+            richTextBox1.ScrollToCaret();  // Automatically scroll to the latest entry
         }
 
         private void AddDirectoryToTreeView(string dirPath, TreeNodeCollection nodes)
         {
             DirectoryInfo dir = new DirectoryInfo(dirPath);
 
-            // Add folder
-            TreeNode dirNode = new TreeNode(dir.Name) { Tag = dir.FullName };
+            TreeNode dirNode = new TreeNode(dir.Name) { Tag = dir.FullName };   // Add folder
             nodes.Add(dirNode);
 
-            // Add subfolders recursively.
-            foreach (var subDir in dir.GetDirectories())
+            foreach (var subDir in dir.GetDirectories())                        // Add subfolders recursively.
             {
                 AddDirectoryToTreeView(subDir.FullName, dirNode.Nodes);
             }
 
-            // Add files for folders.
-            foreach (var file in dir.GetFiles())
+            foreach (var file in dir.GetFiles())                                // Add files for folders.
             {
                 TreeNode fileNode = new TreeNode(file.Name) { Tag = file.FullName };
                 dirNode.Nodes.Add(fileNode);
@@ -80,99 +85,100 @@ namespace AssetTool
                                 WriteFilesToArchive(writer, treeView1.Nodes);               //  Writing treeView1 to the archive
                             }
                         }
-                        MessageBox.Show("Archive successfully created","Information",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                        MessageBox.Show("Archive successfully created", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         UpdateFileSizeLabel();                                              //  Updataing toolstriplabel
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Can not find any files in treeView. Add some file(s) first!", "Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("Can not find any files in treeView. Add some file(s) first!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void WriteFilesToArchive(BinaryWriter writer, TreeNodeCollection nodes)
-{
-    // List of metadata containing information about files and directories
-    List<(string filename, long offset, int size)> metaDataList = new List<(string, long, int)>();
-
-    // Write content and collect metadata
-    WriteContent(writer, nodes, metaDataList);
-
-    // Starting offset of metadata
-    long directoryOffset = writer.BaseStream.Position;
-
-    // Write the number of files (4 bytes)
-    writer.Write(metaDataList.Count);
-
-    // Write all metadata
-    foreach (var metaData in metaDataList)
-    {
-        // Filename (terminated with a null character)
-        writer.Write(Encoding.ASCII.GetBytes(metaData.filename));
-        writer.Write((byte)0);  // Null terminator at the end of the filename
-
-        // File offset (4 bytes)
-        writer.Write((int)metaData.offset);
-
-        // File size (4 bytes)
-        writer.Write((int)metaData.size);
-    }
-
-    // Finally, write the directory offset (4 bytes)
-    writer.Write((int)directoryOffset);
-}
-
-// Recursive function to write file and directory contents
-private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(string filename, long offset, int size)> metaDataList)
-{
-    foreach (TreeNode node in nodes)
-    {
-        string fullPath = node.Tag.ToString();
-
-        if (Directory.Exists(fullPath)) // Directory handling
         {
-            // Recursive call for files and subdirectories within the directory
-            WriteContent(writer, node.Nodes, metaDataList);
-        }
-        else if (File.Exists(fullPath)) // File handling
-        {
-            FileInfo fileInfo = new FileInfo(fullPath);
+            List<(string filename, long offset, int size, bool isDirectory)> metaDataList = new List<(string, long, int, bool)>();
 
-            // Write file content to the archive
-            long currentOffset = writer.BaseStream.Position;
-            using (FileStream fs = new FileStream(fullPath, FileMode.Open))
+            WriteContent(writer, nodes, metaDataList);          // Writing file and folder metadata and content
+
+            long directoryOffset = writer.BaseStream.Position;  // Writing metadata
+            writer.Write(metaDataList.Count);                   // Writing the number of files and folders
+
+            foreach (var metaData in metaDataList)
             {
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                writer.Write(Encoding.ASCII.GetBytes(metaData.filename));
+                writer.Write((byte)0);                          // Null terminator
+                writer.Write((int)metaData.offset);
+                writer.Write((int)metaData.size);
+
+                LogToRichTextBox($"Metadata: {metaData.filename}, Offset: {metaData.offset}, Size: {metaData.size}");
+            }
+            writer.Write((int)directoryOffset);                 // Writing directory offset
+            LogToRichTextBox("Directory offset written: " + directoryOffset);
+        }
+
+        private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(string filename, long offset, int size, bool isDirectory)> metaDataList)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                string nodePath = node.Tag.ToString();
+
+                // If folder
+                if (node.Nodes.Count > 0)
                 {
-                    writer.Write(buffer, 0, bytesRead);
+                    long currentOffset = writer.BaseStream.Position;
+                    metaDataList.Add((node.FullPath, currentOffset, 0, true));  // Folder metadata
+
+                    LogToRichTextBox($"Folder added (virtual): {node.FullPath}, Offset: {currentOffset}");
+
+                    WriteContent(writer, node.Nodes, metaDataList); // Recursively write the folder's content (subfolders and files)
+                }
+                // If file
+                else if (File.Exists(nodePath))
+                {
+                    try
+                    {
+                        long fileOffset = writer.BaseStream.Position;
+                        byte[] fileData = File.ReadAllBytes(nodePath);
+
+                        if (fileData.Length > 0)
+                        {
+                            writer.Write(fileData);  // Writing file content
+                            LogToRichTextBox($"File added: {node.FullPath}, Size: {fileData.Length}, Offset: {fileOffset}");
+
+                            metaDataList.Add((node.FullPath, fileOffset, fileData.Length, false));  // File metadata
+                        }
+                        else
+                        {
+                            LogToRichTextBox($"Error: {node.FullPath} file is empty or unreadable.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogToRichTextBox($"Error occurred while {node.FullPath} writing file: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    LogToRichTextBox($"File or folder does not exist: {nodePath}");
                 }
             }
-
-            // Add file metadata to the list
-            metaDataList.Add((node.FullPath, currentOffset, (int)fileInfo.Length));
         }
-    }
-}
+
         private void button6_Click(object sender, EventArgs e)
         {
-            using (var newFolderDialog = new NodeName(true)) 
+            using (var newFolderDialog = new NodeName(true))
             {
                 if (newFolderDialog.ShowDialog() == DialogResult.OK)
                 {
                     string newFolderName = newFolderDialog.FolderName;
+                    string fullPath = Path.Combine(Application.StartupPath, newFolderName);  // Full path to the folder
 
-                    TreeNode newNode = new TreeNode(newFolderName) { Tag = newFolderName };             //  Add new folder (node) in the treeView1.
-                    if (treeView1.SelectedNode != null)
-                    {
-                        treeView1.SelectedNode.Nodes.Add(newNode);
-                    }
-                    else
-                    {
-                        treeView1.Nodes.Add(newNode);
-                    }
+                    TreeNode newNode = new TreeNode(newFolderName) { Tag = fullPath };
+                    treeView1.Nodes.Add(newNode);  // Add the new folder to the root level
+
+                    LogToRichTextBox($"Folder added: {fullPath}");
                 }
             }
         }
@@ -207,6 +213,11 @@ private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(s
                     }
 
                     UpdateFileSizeLabel();
+
+                    if (radioButton2.Checked)
+                    {
+                        CheckMissingFiles();
+                    }
                 }
             }
         }
@@ -241,7 +252,7 @@ private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(s
 
                     if (treeView1.SelectedNode != null)
                     {
- 
+
                         treeView1.SelectedNode.Nodes.Add(newNode);
                     }
                     else
@@ -259,7 +270,7 @@ private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(s
 
             foreach (TreeNode node in nodes)
             {
-                if (node.Nodes.Count > 0)   
+                if (node.Nodes.Count > 0)
                 {
                     totalSize += GetTotalFileSize(node.Nodes);
                 }
@@ -269,7 +280,7 @@ private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(s
                     FileInfo fileInfo = new FileInfo(filePath);
                     if (fileInfo.Exists)
                     {
-                        totalSize += fileInfo.Length / 1024;                                   //  Add file size
+                        totalSize += fileInfo.Length / 1024;                            //  Add file size
                     }
                 }
             }
@@ -288,14 +299,155 @@ private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(s
             textBox1.Clear();
             UpdateFileSizeLabel();
         }
+
+        //MapData building mode. This part of the code has nothing to do with all the above functions!
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton2.Checked == true)
+            {
+                MessageBox.Show("MapData.box archive builder info:\n\n Builder mode set to Skirmish.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Check the required files
+                List<string> requiredFiles = new List<string> { "Radar.bik", "background.bik", "init.oms", "information.oms" };
+                List<string> missingFiles = new List<string>();
+
+                foreach (string file in requiredFiles)
+                {
+                    if (!IsFilePresentInTreeView(file, treeView1.Nodes))
+                    {
+                        missingFiles.Add(file);
+                    }
+                }
+
+                // If there are missing files, display them in the richTextBox1
+                if (missingFiles.Count > 0)
+                {
+                    richTextBox1.Clear();
+                    richTextBox1.AppendText("Missing files:\n");
+                    foreach (string missingFile in missingFiles)
+                    {
+                        richTextBox1.AppendText(missingFile + "\n");
+                    }
+                }
+                else
+                {
+                    richTextBox1.Clear();
+                    richTextBox1.AppendText("All required files are present.\n");
+                }
+            }
+            else
+            {
+                MessageBox.Show("*.box archive builder mode\n has been set to Normal mode.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            textBox1.ReadOnly = radioButton2.Checked;
+            textBox1.Text = "MapData";
+        }
+
+        private bool IsFilePresentInTreeView(string fileName, TreeNodeCollection nodes)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Nodes.Count > 0)
+                {
+                    if (IsFilePresentInTreeView(fileName, node.Nodes))
+                        return true;
+                }
+                else if (node.Text.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void CheckMissingFiles()
+        {
+            List<string> requiredFiles = new List<string> { "Radar.bik", "background.bik", "init.oms", "information.oms" };
+            List<string> missingFiles = new List<string>();
+
+            foreach (string file in requiredFiles)
+            {
+                if (!IsFilePresentInTreeView(file, treeView1.Nodes))
+                {
+                    missingFiles.Add(file);
+                }
+            }
+
+            // Updating richTextBox1 with missing files.
+            if (missingFiles.Count > 0)
+            {
+                richTextBox1.Clear();
+                richTextBox1.AppendText("Missing files:\n");
+                foreach (string missingFile in missingFiles)
+                {
+                    richTextBox1.AppendText(missingFile + "\n");
+                }
+            }
+            else
+            {
+                richTextBox1.Clear();
+                richTextBox1.AppendText("All required files are present.\n");
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Check if a node is selected in the TreeView
+            if (treeView1.SelectedNode != null)
+            {
+                // Check if the selected node is a file (and not a folder)
+                if (treeView1.SelectedNode.Nodes.Count == 0)  // It's a file if there are no child nodes
+                {
+                    LogToRichTextBox($"File deleted: {treeView1.SelectedNode.FullPath}");
+                    treeView1.SelectedNode.Remove();  // Remove the file
+                }
+                else
+                {
+                    MessageBox.Show("The selected item is a folder, not a file. Use the appropriate button to delete folders.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No file selected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            // Check if a node is selected in the TreeView
+            if (treeView1.SelectedNode != null)
+            {
+                // Check if the selected node is a folder or subfolder
+                if (treeView1.SelectedNode.Nodes.Count >= 0) // It can be a folder even if it's empty (Nodes.Count == 0)
+                {
+                    // Warning about deleting the folder and its contents
+                    DialogResult result = MessageBox.Show($"Are you sure you want to delete the folder '{treeView1.SelectedNode.Text}' and all its contents?", "Delete Folder", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        LogToRichTextBox($"Folder deleted: {treeView1.SelectedNode.FullPath}");
+                        treeView1.SelectedNode.Remove();  // Remove the folder and its contents
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The selected item is not a folder or subfolder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No folder selected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+        }
     }
 }
 
-//Info: BoxBuilder.cs uses the NullTerminator.cs, BoxStruct.cs and NodeName.cs files
-
-
-//TODO
-
-// fix&Implement folder and subfolder function!
-// Method: *.box archives can store only files and / or files and folders and subfolders
-// and some files can be outside of folders and subfolders too... 
+// Important: This code is well-implemented. No need for major changes.
+// Only MapData building mode needed to be improved.
