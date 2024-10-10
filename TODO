@@ -1,0 +1,44 @@
+/*
+*  The Outforce - O3D Game Engine Asset tool.
+*/
+=
+
+Upcoming updates / features in a nutshell (V1.2.X)
+=
+
+Program:
+
++ Improved syntax-checker for the OMS editor
++ Improve Finder.
+
+PackedProject.opf asset container archive:
+
++ Parser for the classes section files.
++ OPF extractor - builder.
+
+[FOR OPENED *.BOX archives]:
+=
+
++ Add Node / Childnode (folders) to the opened archive
++ Add file(s) to the opened archive
++ Add replace file for the archives
++ Add remove file function for archives.
++ Add clear Node/childnode (folders) function
++ Archive rename + backup function
+
+[MISC]:
+=
++ Installer + Minitray
+
+[PROGRAM IMPROVEMENTS AND FIXES]:
+=
+
+Fix:	On the Form1, fix toolstriplabels for the *.opf archive (Archive offset, selected file offset and size)
+Fix:	On the Image Inspector form, fix toolstripLabels for the *.opf stuffs
+Fix:	OPFLoader code (there are around 2000 files in the *.opf arcive less than 800 could be loaded...
+
+[DOWNLOAD CENTER IMPROVEMENTS]:
+=
+*Fix progressbar-related issues.
++Implement Filter for filetypes.
+*Fix SSPI-related issues.
