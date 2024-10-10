@@ -1,4 +1,12 @@
 {Version V1.2.2 beta}
+
+2024.10.10, 20:20
+Improvements: BoxBuilder
+Additons: Remove selected file, and remove selected folder / subfolder button has been added!
+Fixes   : There was some issues that caused that the treeView1 component could not handle folder(s) and subfolder(s) well.
+
+// Previous Versions
+
 [NEW!] 2024.10.08, 15:24
 
 Improvements: 
@@ -14,7 +22,7 @@ Improvements:
 Fixes:
 *	Fixed: No program restart is required after creating a new archive
 
-//Previous versions
+// Previous versions
 
 [NEW!]
 2024.10.03:
