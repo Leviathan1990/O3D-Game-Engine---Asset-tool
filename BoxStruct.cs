@@ -2,8 +2,9 @@
  *  
  *  The Outforce O3D Engine Asset Tool.
  *  Designed by: Krisztian Kispeti
- *  Location: Kaposv·r, HU.
- *  Contact:
+ *  Location: Kaposv√°r, HU.
+ *  Web: www.theoutforce.hu
+ *  Contact: admin@theoutforce.hu
  */
 
 using System.Collections.Generic;
