@@ -1,3 +1,5 @@
+// NullTerminator.cs
+
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -12,6 +14,16 @@ public static class NullTerminator
         {
             bytes.Add(b);
         }
-        return Encoding.ASCII.GetString(bytes.ToArray());
+
+        try
+        {
+            return Encoding.UTF7.GetString(bytes.ToArray());
+        }
+        
+        catch
+        {
+            return Encoding.ASCII.GetString(bytes.ToArray());
+        }
     }
+    
 }
