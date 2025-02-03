@@ -1,4 +1,4 @@
-﻿/*  Program configuration panel.
+/*  Program configuration panel.
  *  
  *  The Outforce    O3D Engine Asset Tool.
  *  Designed by:    Krisztian Kispeti
@@ -20,6 +20,21 @@ namespace AssetTool
         {
             InitializeComponent();
             _form1 = form1;
+            string theme = ThemeManager.LoadConfig("Theme", "Light");
+            if (theme == "Dark")
+            {
+                DarkModeR.Checked = true;
+            }
+
+            else if (theme == "Light")
+            {
+                LightModeR.Checked = true;
+            }
+            else
+            {
+                ThemeDefault.Checked = true;
+            }
+
         }
 
         public TextBox ArchivePathTextBox => ArchivePath;
@@ -29,6 +44,22 @@ namespace AssetTool
 
         private void Form3_Load(object sender, EventArgs e)
         {
+            string theme = ThemeManager.LoadConfig("Theme", "Light");
+
+            if (theme == "Dark")
+            {
+                DarkModeR.Checked = true;
+            }
+            else if (theme == "Light")
+            {
+                LightModeR.Checked = true;
+            }
+            else
+            {
+                ThemeDefault.Checked = true;
+            }
+
+            ThemeManager.ApplyLightMode(this);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -58,20 +89,54 @@ namespace AssetTool
             }
         }
 
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)    //  Set theme Light
+        {
+            if (LightModeR.Checked)
+            {
+                SetTheme("Light");
+            }
+        }
+        private void SetTheme(string theme)
+        {
+            ThemeManager.SaveConfig("Theme", theme);
+            //  Apply selected theme on each forms
+            foreach (Form openForm in Application.OpenForms)
+            {
+                if (theme == "Dark")
+                {
+                    ThemeManager.ApplyDarkMode(openForm);
+                }
+                else if (theme == "Light")
+                {
+                    ThemeManager.ApplyLightMode(openForm);
+                }
+                else // Default mód
+                {
+                    ThemeManager.ApplyDefaultMode(openForm);
+                }
+            }
+
+        }       //  Theme manager
+        private void DarkModeR_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DarkModeR.Checked)
+            {
+                SetTheme("Dark");
+            }
+        }   //  Set theme Dark
+
+        private void ThemeDefault_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ThemeDefault.Checked)
+            {
+                SetTheme("Default");
+            }
+        }   //  Set theme default
 
         public string ExtractionPath
         {
             get { return AssetPath.Text; }
         }
 
-
-
     }
 }
-
-
-
-//< --------------------| [0] |--------------------- >
-
-//  IMPORTANT NOTES:
-//  +Implement Normal / Dark mode.
