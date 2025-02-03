@@ -1,3 +1,30 @@
+{Version V 1.2.3 RC1}
+2025.02.03, 15:46.
+[ADDITIONS:]
+
++	Console has been finally implemented!
++	Theme manager has been added! (Dark-Light-Default(gray))
++	Syntax checker (OMSEDITOR form)
++	Added ToolTip (OMSEDITOR form)
++	MapDataEditor Tool
+
+[IMPROVEMENTS:]
+
++	Code reviewed, cleaned, program loads smoother.
++	Groupboxes removed, splitcontainers added!
++	Settings form improved
+
+[FIXES:]
+
++	HighLighter-related issue fixed, now it is compatible with the Theme manager.
+
+[KNOWING ISSUES]
+
++	Some functions arent implemented (add single file, replace, remove file, add folder, subfolder, save modified archive, clear file - node)
++	There is a problem with the search (Main form) and the filter. Will be fixed in the next update!
++	Reload original text function for OMSEDITOR (after extract slashes used) 
+//  Previous versions
+
 {Version V1.2.2 beta}
 
 2024.10.10, 20:20
