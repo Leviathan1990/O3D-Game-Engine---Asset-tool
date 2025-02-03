@@ -1,4 +1,4 @@
-﻿/*  Outforce BoxBuilder.cs
+﻿/*  Outforce MConsolecs.cs
  * 
  *  The Outforce O3D Engine Asset Tool.
  *  Designed by: Krisztian Kispeti
