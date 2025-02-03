@@ -32,6 +32,7 @@ namespace AssetTool
 
         private void BoxBuilder_Load(object sender, EventArgs e)
         {
+            treeView1.MouseDown += TreeView1_MouseDown;
             string theme = ThemeManager.LoadConfig("Theme", "Light");
             if (theme == "Dark")
             {
@@ -51,6 +52,20 @@ namespace AssetTool
             UpdateFileSizeLabel();
             textBox1.Clear();
             radioButton1.Checked = true;
+        }
+
+        private void TreeView1_MouseDown(object? sender, MouseEventArgs e)
+        {
+            TreeNode clickedNode = treeView1.GetNodeAt(e.X, e.Y); // Check have you clicked on a node.
+
+            if (clickedNode != null)
+            {
+                treeView1.SelectedNode = clickedNode; // Select only after you clicked on a node.
+            }
+            else
+            {
+                treeView1.SelectedNode = null; // If clicked outside of any nodes (empty place), then remove selection (to make it possible to add files outside of folders or subfolders)
+            }
         }
 
         private void LogToRichTextBox(string message)
@@ -101,7 +116,6 @@ namespace AssetTool
                             }
                         }
                         MessageBox.Show("Archive successfully created", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        //reporterForm.AddSuccess(string.Format("Archive: '{0}' successfully created, and exported to path: '{1}'",Path.GetFileNameWithoutExtension(archiveName),archiveName));
                         
                         UpdateFileSizeLabel();                                              //  Updataing toolstriplabel
                     }
@@ -260,7 +274,7 @@ namespace AssetTool
 
         private void UpdateSelectedFileSizeLabel()
         {
-            if (treeView1.SelectedNode != null && treeView1.SelectedNode.Nodes.Count == 0) // Ellenőrzi, hogy fájl van-e kiválasztva
+            if (treeView1.SelectedNode != null && treeView1.SelectedNode.Nodes.Count == 0) // Check if the file is selected.
             {
                 string filePath = treeView1.SelectedNode.Tag.ToString();
                 if (File.Exists(filePath))
@@ -512,5 +526,7 @@ namespace AssetTool
     }
 }
 
-// Important: This code is well-implemented. No need for major changes.
-// Only MapData building mode needed to be improved.
+//      TODO:
+//  Important: This code is well-implemented, but still having problems with the treeView1 selection:
+//  If a folder is added, I can not add file(s) outside of the folder... 
+//  BoxBuilder uses the BoxStruct.cs and NullTerminator.cs files...
