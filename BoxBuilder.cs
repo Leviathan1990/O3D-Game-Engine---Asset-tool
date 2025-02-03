@@ -23,6 +23,7 @@ namespace AssetTool
 {
     public partial class BoxBuilder : Form
     {
+        private MConsolecs reporterForm = new MConsolecs();
         private ImageList imageList;
         public BoxBuilder()
         {
@@ -31,6 +32,20 @@ namespace AssetTool
 
         private void BoxBuilder_Load(object sender, EventArgs e)
         {
+            string theme = ThemeManager.LoadConfig("Theme", "Light");
+            if (theme == "Dark")
+            {
+                ThemeManager.ApplyDarkMode(this);
+            }
+            else if (theme == "Light")
+            {
+                ThemeManager.ApplyLightMode(this);
+            }
+            else
+            {
+                ThemeManager.ApplyDefaultMode(this);
+            }
+
             TViewSpecs.SetImageList(treeView1);
             treeView1.Nodes.Clear();
             UpdateFileSizeLabel();
@@ -41,7 +56,7 @@ namespace AssetTool
         private void LogToRichTextBox(string message)
         {
             richTextBox1.AppendText(message + Environment.NewLine);
-            richTextBox1.ScrollToCaret();                                        // Automatically scroll to the latest entry
+            richTextBox1.ScrollToCaret();  // Automatically scroll to the latest entry
         }
 
         private void AddDirectoryToTreeView(string dirPath, TreeNodeCollection nodes)
@@ -86,6 +101,8 @@ namespace AssetTool
                             }
                         }
                         MessageBox.Show("Archive successfully created", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //reporterForm.AddSuccess(string.Format("Archive: '{0}' successfully created, and exported to path: '{1}'",Path.GetFileNameWithoutExtension(archiveName),archiveName));
+                        
                         UpdateFileSizeLabel();                                              //  Updataing toolstriplabel
                     }
                 }
@@ -243,7 +260,7 @@ namespace AssetTool
 
         private void UpdateSelectedFileSizeLabel()
         {
-            if (treeView1.SelectedNode != null && treeView1.SelectedNode.Nodes.Count == 0) // Check if is there selected file.
+            if (treeView1.SelectedNode != null && treeView1.SelectedNode.Nodes.Count == 0) // Ellenőrzi, hogy fájl van-e kiválasztva
             {
                 string filePath = treeView1.SelectedNode.Tag.ToString();
                 if (File.Exists(filePath))
