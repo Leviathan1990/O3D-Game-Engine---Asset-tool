@@ -2,7 +2,7 @@
  * 
  *  The Outforce O3D Engine Asset Tool.
  *  Designed by: Krisztian Kispeti
- *  Location: Kaposvár, HU.
+ *  Location: KaposvÃ¡r, HU.
  *  Contact: admin@theoutforce.hu
  *  Website: www.theoutforce.hu
  */
@@ -53,8 +53,8 @@ namespace InitConsole
                 string command = commander.Text.Trim();
                 if (!string.IsNullOrEmpty(command))
                 {
-                    ExecuteCommand(command, null); // Ha van útvonal TextBox, itt add meg
-                    commander.Clear(); // Parancs szöveg törlése
+                    ExecuteCommand(command, null);
+                    commander.Clear(); // Clear commander  text.
                 }
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -215,15 +215,15 @@ namespace InitConsole
 
         private void DisplayAbout()
 {
-    // Az aktuális assembly kiolvasása
+    // Reading actual assembly
     Assembly assembly = Assembly.GetExecutingAssembly();
 
-    // Attribútumok kiolvasása
+    // Reading Attributes
     string productName = ((AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute))).Product ?? "Unknown Product";
     string version = assembly.GetName().Version.ToString();
     string developer = ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCompanyAttribute))).Company ?? "Unknown Developer";
 
-    // Az információk megjelenítése
+    // Display informations
     reporter.AppendText(string.Format("Product information:\n{0} {1}\nDeveloped by: {2}\n", productName, version, developer));
 
 }
@@ -237,7 +237,7 @@ namespace InitConsole
             Application.Restart();
         }
 
-        //  Form3 "Tutorial" form related shit
+        //  Form3 "Tutorial" form related sh!t
         private void DModeInfo()
         {
             reporter.AppendText(string.Format("Dmode value for Tutorial form is: {0}\n", tutorialColor));
