@@ -1,4 +1,4 @@
-﻿/*  Outforce MConsolecs.cs
+/*  Outforce MConsolecs.cs
  * 
  *  The Outforce O3D Engine Asset Tool.
  *  Designed by: Krisztian Kispeti
@@ -25,8 +25,31 @@ namespace AssetTool
 {
     public partial class MConsolecs : Form
     {
-        private List<BoxItem> toc = new List<BoxItem>();
+        private static MConsolecs reporterForm;
         private TinaConsole tinaConsole;
+
+        public static void OpenReporter()
+        {
+            if (reporterForm == null || reporterForm.IsDisposed)
+            {
+
+                reporterForm = new MConsolecs();
+                reporterForm.Show();
+            }
+            else
+            {
+                reporterForm.BringToFront();
+            }
+        }
+
+        public static MConsolecs GetInstance()
+        {
+            if (reporterForm == null || reporterForm.IsDisposed)
+            {
+                OpenReporter();
+            }
+            return reporterForm;
+        }
 
         public MConsolecs()
         {
@@ -63,27 +86,29 @@ namespace AssetTool
                 Reporter.ScrollToCaret();
             }
         }
-
-
         private void MConsolecs_Load(object sender, EventArgs e)
         {
 
         }
 
+        //  Close Console
         private void button1_Click(object sender, EventArgs e)
         {
             Close();
         }
-
+        //  Copy to clipboard
         private void button2_Click(object sender, EventArgs e)
         {
             string text = "The Outforce O3D engine tool summary:" + Environment.NewLine + this.Reporter.Text;
             Clipboard.SetText(text);
         }
-
+        //  Clear console
         private void button3_Click(object sender, EventArgs e)
         {
             Reporter.Clear();
         }
+
+
+
     }
 }
