@@ -23,7 +23,6 @@ namespace AssetTool
 {
     public partial class BoxBuilder : Form
     {
-        private MConsolecs reporterForm = new MConsolecs();
         private ImageList imageList;
         public BoxBuilder()
         {
@@ -32,21 +31,21 @@ namespace AssetTool
 
         private void BoxBuilder_Load(object sender, EventArgs e)
         {
-            treeView1.MouseDown += TreeView1_MouseDown;
-            string theme = ThemeManager.LoadConfig("Theme", "Light");
-            if (theme == "Dark")
+            //  Console form
+            if (Application.OpenForms.OfType<MConsolecs>().Any())
             {
-                ThemeManager.ApplyDarkMode(this);
-            }
-            else if (theme == "Light")
-            {
-                ThemeManager.ApplyLightMode(this);
-            }
-            else
-            {
-                ThemeManager.ApplyDefaultMode(this);
+                Console.WriteLine("reporterForm already open, skipping OpenReporter.");
+                return;
             }
 
+            //  Open Console
+            MConsolecs.OpenReporter();
+
+            //  Theme manager
+            ApplyTheme.SetTheme(this);
+
+            //  TreeView1 stuffs
+            treeView1.MouseDown += TreeView1_MouseDown;
             TViewSpecs.SetImageList(treeView1);
             treeView1.Nodes.Clear();
             UpdateFileSizeLabel();
@@ -54,24 +53,11 @@ namespace AssetTool
             radioButton1.Checked = true;
         }
 
-        private void TreeView1_MouseDown(object? sender, MouseEventArgs e)
-        {
-            TreeNode clickedNode = treeView1.GetNodeAt(e.X, e.Y); // Check have you clicked on a node.
-
-            if (clickedNode != null)
-            {
-                treeView1.SelectedNode = clickedNode; // Select only after you clicked on a node.
-            }
-            else
-            {
-                treeView1.SelectedNode = null; // If clicked outside of any nodes (empty place), then remove selection (to make it possible to add files outside of folders or subfolders)
-            }
-        }
-
         private void LogToRichTextBox(string message)
         {
+            //  richTextBox
             richTextBox1.AppendText(message + Environment.NewLine);
-            richTextBox1.ScrollToCaret();  // Automatically scroll to the latest entry
+            richTextBox1.ScrollToCaret();  //   Automatically scroll to the latest entry
         }
 
         private void AddDirectoryToTreeView(string dirPath, TreeNodeCollection nodes)
@@ -116,83 +102,80 @@ namespace AssetTool
                             }
                         }
                         MessageBox.Show("Archive successfully created", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MConsolecs.GetInstance().AddSuccess($"Archive successfully created!");
                         
-                        UpdateFileSizeLabel();                                              //  Updataing toolstriplabel
+                        UpdateFileSizeLabel();  //  Updataing toolstriplabel
                     }
                 }
             }
             else
             {
                 MessageBox.Show("Can not find any files in treeView. Add some file(s) first!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MConsolecs.GetInstance().AddError($"Can not find any files in treeView. Add some file(s) first!");
             }
         }
 
         private void WriteFilesToArchive(BinaryWriter writer, TreeNodeCollection nodes)
         {
-            List<(string filename, long offset, int size, bool isDirectory)> metaDataList = new List<(string, long, int, bool)>();
+            List<(string filename, long offset, int size)> metaDataList = new List<(string, long, int)>();
 
-            WriteContent(writer, nodes, metaDataList);          // Writing file and folder metadata and content
+            // 1️⃣ Writing files and folders
+            WriteContent(writer, nodes, metaDataList);
 
-            long directoryOffset = writer.BaseStream.Position;  // Writing metadata
-            writer.Write(metaDataList.Count);                   // Writing the number of files and folders
+            // 2️⃣ Save folder offset
+            long directoryOffset = writer.BaseStream.Position;
+
+            // 3️⃣ Writing number of files
+            writer.Write(metaDataList.Count);
 
             foreach (var metaData in metaDataList)
             {
-                writer.Write(Encoding.ASCII.GetBytes(metaData.filename));
-                writer.Write((byte)0);                          // Null terminator
+                byte[] nameBytes = Encoding.ASCII.GetBytes(metaData.filename);
+                writer.Write(nameBytes);
+                writer.Write((byte)0); // Null terminator
                 writer.Write((int)metaData.offset);
                 writer.Write((int)metaData.size);
 
-                LogToRichTextBox($"Metadata: {metaData.filename}, Offset: {metaData.offset}, Size: {metaData.size}");
+                LogToRichTextBox($"Metadata written: {metaData.filename}, Offset: {metaData.offset}, Size: {metaData.size}");
             }
-            writer.Write((int)directoryOffset);                 // Writing directory offset
+
+            // 4️⃣ Writing the folder offset at the end of archive
+            writer.Write((int)directoryOffset);
             LogToRichTextBox("Directory offset written: " + directoryOffset);
         }
-
-        private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(string filename, long offset, int size, bool isDirectory)> metaDataList)
+        //  Write Content to *.box
+        private void WriteContent(BinaryWriter writer, TreeNodeCollection nodes, List<(string filename, long offset, int size)> metaDataList)
         {
             foreach (TreeNode node in nodes)
             {
-                string nodePath = node.Tag.ToString();
+                string nodePath = node.FullPath.Replace("\\", "/"); // We ensure that the file path remains consistent.
 
-                // If folder
-                if (node.Nodes.Count > 0)
+                if (node.Nodes.Count > 0) // Folder
                 {
-                    long currentOffset = writer.BaseStream.Position;
-                    metaDataList.Add((node.FullPath, currentOffset, 0, true));  // Folder metadata
-
-                    LogToRichTextBox($"Folder added (virtual): {node.FullPath}, Offset: {currentOffset}");
-
-                    WriteContent(writer, node.Nodes, metaDataList); // Recursively write the folder's content (subfolders and files)
+                    LogToRichTextBox($"Skipping folder: {nodePath} (only files are stored)");
+                    WriteContent(writer, node.Nodes, metaDataList); // Writing subfolders and files
                 }
-                // If file
-                else if (File.Exists(nodePath))
+                else if (File.Exists(node.Tag.ToString())) // File
                 {
                     try
                     {
                         long fileOffset = writer.BaseStream.Position;
-                        byte[] fileData = File.ReadAllBytes(nodePath);
+                        byte[] fileData = File.ReadAllBytes(node.Tag.ToString());
 
-                        if (fileData.Length > 0)
-                        {
-                            writer.Write(fileData);  // Writing file content
-                            LogToRichTextBox($"File added: {node.FullPath}, Size: {fileData.Length}, Offset: {fileOffset}");
+                        writer.Write(fileData);
 
-                            metaDataList.Add((node.FullPath, fileOffset, fileData.Length, false));  // File metadata
-                        }
-                        else
-                        {
-                            LogToRichTextBox($"Error: {node.FullPath} file is empty or unreadable.");
-                        }
+                        metaDataList.Add((nodePath, fileOffset, fileData.Length));
+
+                        LogToRichTextBox($"File written: {nodePath}, Size: {fileData.Length}, Offset: {fileOffset}");
                     }
                     catch (Exception ex)
                     {
-                        LogToRichTextBox($"Error occurred while {node.FullPath} writing file: {ex.Message}");
+                        LogToRichTextBox($"Error writing {nodePath}: {ex.Message}");
                     }
                 }
                 else
                 {
-                    LogToRichTextBox($"File or folder does not exist: {nodePath}");
+                    LogToRichTextBox($"File does not exist: {nodePath}");
                 }
             }
         }
@@ -213,9 +196,12 @@ namespace AssetTool
                 }
             }
         }
-
+        //  Add file(s) // translate
         private void button5_Click(object sender, EventArgs e)
         {
+            //  We save the currently selected node, but only if checkBox1 is checked.
+            TreeNode previouslySelectedNode = treeView1.SelectedNode;
+
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Multiselect = true;
@@ -233,15 +219,29 @@ namespace AssetTool
                             SelectedImageKey = TViewSpecs.GetImageKey(filePath)
                         };
 
-                        if (treeView1.SelectedNode != null)
+                        if (previouslySelectedNode != null && previouslySelectedNode.Nodes.Count >= 0)
                         {
-                            treeView1.SelectedNode.Nodes.Add(fileNode);
+                            //  If a folder or subfolder is selected, the file will be placed there.
+                            previouslySelectedNode.Nodes.Add(fileNode);
+                            previouslySelectedNode.Expand();
                         }
                         else
                         {
+                            //  If nothing is selected, the file will be placed at the root level.
                             treeView1.Nodes.Add(fileNode);
                         }
                     }
+
+                    //  We restore the selection if checkBox1 is checked and a folder was selected.
+                    if (checkBox1.Checked && previouslySelectedNode != null)
+                    {
+                        treeView1.SelectedNode = previouslySelectedNode;
+                        previouslySelectedNode.Expand();
+                        previouslySelectedNode.EnsureVisible();
+                    }
+
+                    //  We return the focus to treeView1.
+                    treeView1.Focus();
 
                     UpdateFileSizeLabel();
                     UpdateFileCountLabel();
@@ -274,7 +274,7 @@ namespace AssetTool
 
         private void UpdateSelectedFileSizeLabel()
         {
-            if (treeView1.SelectedNode != null && treeView1.SelectedNode.Nodes.Count == 0) // Check if the file is selected.
+            if (treeView1.SelectedNode != null && treeView1.SelectedNode.Nodes.Count == 0) // Is there a file selected
             {
                 string filePath = treeView1.SelectedNode.Tag.ToString();
                 if (File.Exists(filePath))
@@ -405,6 +405,7 @@ namespace AssetTool
                     foreach (string missingFile in missingFiles)
                     {
                         richTextBox1.AppendText(missingFile + "\n");
+                        MConsolecs.GetInstance().AddError($"Missing files: {missingFile}");
                     }
                 }
                 else
@@ -416,6 +417,7 @@ namespace AssetTool
             else
             {
                 MessageBox.Show("*.box archive builder mode\n has been set to Normal mode.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MConsolecs.GetInstance().ConsoleMessage($"Archive builder mode has been cet to Normal mode.\n");
             }
 
             textBox1.ReadOnly = radioButton2.Checked;
@@ -439,6 +441,7 @@ namespace AssetTool
             return false;
         }
 
+        //  Missing files
         private void CheckMissingFiles()
         {
             List<string> requiredFiles = new List<string> { "Radar.bik", "background.bik", "init.oms", "information.oms" };
@@ -457,15 +460,18 @@ namespace AssetTool
             {
                 richTextBox1.Clear();
                 richTextBox1.AppendText("Missing files:\n");
+                
                 foreach (string missingFile in missingFiles)
                 {
                     richTextBox1.AppendText(missingFile + "\n");
+                    MConsolecs.GetInstance().AddError($"Missing files:{missingFiles}\n");
                 }
             }
             else
             {
                 richTextBox1.Clear();
                 richTextBox1.AppendText("All required files are present.\n");
+                MConsolecs.GetInstance().AddSuccess($"All required files are present.\n");
             }
         }
 
@@ -523,10 +529,22 @@ namespace AssetTool
         {
             richTextBox1.Clear();
         }
+
+        //  treeView1 Mouse down
+        private void TreeView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            TreeNode clickedNode = treeView1.GetNodeAt(e.X, e.Y);
+
+            if (clickedNode != null)
+            {
+                treeView1.SelectedNode = clickedNode; // Select the file or folder
+            }
+            else if (!checkBox1.Checked)
+            {
+                treeView1.SelectedNode = null; // If not selected the checkbox, then unselect.
+            }
+        }
+
+
     }
 }
-
-//      TODO:
-//  Important: This code is well-implemented, but still having problems with the treeView1 selection:
-//  If a folder is added, I can not add file(s) outside of the folder... 
-//  BoxBuilder uses the BoxStruct.cs and NullTerminator.cs files...
