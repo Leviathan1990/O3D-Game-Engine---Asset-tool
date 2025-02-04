@@ -20,21 +20,12 @@ namespace AssetTool
         {
             InitializeComponent();
             _form1 = form1;
-            string theme = ThemeManager.LoadConfig("Theme", "Light");
-            if (theme == "Dark")
-            {
-                DarkModeR.Checked = true;
-            }
-
-            else if (theme == "Light")
-            {
-                LightModeR.Checked = true;
-            }
-            else
-            {
-                ThemeDefault.Checked = true;
-            }
-
+            //  Load visual configurations
+            LoadVisualConfig.LoadConfiguration(this);
+            //  Apply theme
+            ApplyTheme.SetTheme(this);
+            //  Load RadioButtons
+            LoadVisualConfig.LoadTheme(this);
         }
 
         public TextBox ArchivePathTextBox => ArchivePath;
@@ -42,51 +33,16 @@ namespace AssetTool
         public TextBox AssetPathTextBox => AssetPath;
         public TextBox TempFolder => TemporaryFldr;
 
+        public RadioButton LightModeRadio => LightModeR;
+        public RadioButton DarkModeRadio => DarkModeR;
+        public RadioButton DefaultModeRadio => ThemeDefault;
+
         private void Form3_Load(object sender, EventArgs e)
         {
-            string theme = ThemeManager.LoadConfig("Theme", "Light");
-
-            if (theme == "Dark")
-            {
-                DarkModeR.Checked = true;
-            }
-            else if (theme == "Light")
-            {
-                LightModeR.Checked = true;
-            }
-            else
-            {
-                ThemeDefault.Checked = true;
-            }
-
-            ThemeManager.ApplyLightMode(this);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string configFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Dat");
-            string configFilePath = Path.Combine(configFolderPath, "config.cfg");
-
-            if (!Directory.Exists(configFolderPath))
-            {
-                Directory.CreateDirectory(configFolderPath);
-            }
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(configFilePath))
-                {
-                    writer.WriteLine($"ArchivePath={ArchivePath.Text}");
-                    writer.WriteLine($"BackUpPath={BackUpPath.Text}");
-                    writer.WriteLine($"AssetPath={AssetPath.Text}");
-                    writer.WriteLine($"TemporaryFldr={TemporaryFldr.Text}");
-                }
-
-                MessageBox.Show("Configuration saved successfully.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while saving the configuration: {ex.Message}");
-            }
+            //  Load theme
+            LoadVisualConfig.LoadConfiguration(this);
+            //  Apply theme
+            ApplyTheme.SetTheme(this);
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)    //  Set theme Light
@@ -110,7 +66,7 @@ namespace AssetTool
                 {
                     ThemeManager.ApplyLightMode(openForm);
                 }
-                else // Default mód
+                else // Default mode
                 {
                     ThemeManager.ApplyDefaultMode(openForm);
                 }
@@ -124,7 +80,6 @@ namespace AssetTool
                 SetTheme("Dark");
             }
         }   //  Set theme Dark
-
         private void ThemeDefault_CheckedChanged(object sender, EventArgs e)
         {
             if (ThemeDefault.Checked)
@@ -132,6 +87,33 @@ namespace AssetTool
                 SetTheme("Default");
             }
         }   //  Set theme default
+        private void savePathsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string configFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Dat");
+            string configFilePath = Path.Combine(configFolderPath, "config.cfg");
+
+            if (!Directory.Exists(configFolderPath))
+            {
+                Directory.CreateDirectory(configFolderPath);
+            }
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(configFilePath))
+                {
+                    writer.WriteLine($"ArchivePath={ArchivePath.Text}");
+                    writer.WriteLine($"BackUpPath={BackUpPath.Text}");
+                    writer.WriteLine($"AssetPath={AssetPath.Text}");
+                    writer.WriteLine($"TemporaryFldr={TemporaryFldr.Text}");
+                }
+
+                MessageBox.Show("Configuration saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while saving the configuration: {ex.Message}");
+                MConsolecs.GetInstance().AddError($"An error occurred while saving the configuration: {ex.Message}");
+            }
+        }
 
         public string ExtractionPath
         {
@@ -140,3 +122,6 @@ namespace AssetTool
 
     }
 }
+
+//  Implement language selector
+//  Implement Syntax checker!
