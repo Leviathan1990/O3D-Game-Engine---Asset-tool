@@ -1,4 +1,4 @@
-﻿/*  Outforce Worker Code
+/*  Outforce Worker Code
  * 
  *  The Outforce O3D Engine Asset Tool.
  *  Designed by: Krisztian Kispeti
@@ -21,9 +21,14 @@ namespace AssetTool
 {
     public partial class Form2 : Form
     {
+        private Random random = new Random();
+        private List<Bitmap> images;
+
         public Form2()
         {
             InitializeComponent();
+            LoadImagesFromResources();
+            LoadRandomImage();
         }
 
         public ProgressBar ProgressBar2
@@ -33,6 +38,31 @@ namespace AssetTool
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            progressBar2.Value = 0;
         }
+
+        private void LoadImagesFromResources()
+        {
+            images = new List<Bitmap>
+            { 
+            Properties.Resources.letöltés,
+            Properties.Resources.letöltés__1_
+            };
+        }
+
+        private void LoadRandomImage()
+        {
+            if (images.Count > 0) 
+            {
+                int index = random.Next(images.Count);
+                pictureBox1.Image = images[index];
+            }
+
+            else
+            {
+                MessageBox.Show("Could not find images for Outforce Worker!", "Error",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
     }
 }
