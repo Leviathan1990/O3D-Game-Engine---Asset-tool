@@ -23,5 +23,26 @@ namespace AssetTool
                 MessageBox.Show($"Error loading configuration: {ex.Message}", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        public static void LoadTheme(Form3 form3)
+        {
+            string theme = ThemeManager.LoadConfig("Theme", "Light");
+
+            ApplyTheme.SetTheme(form3); // Apply theme for the Form3.
+
+            //  Set radioButton properly based on the saved theme
+            switch (theme)
+            {
+                case "Dark":
+                    form3.DarkModeRadio.Checked = true;
+                    break;
+                case "Light":
+                    form3.LightModeRadio.Checked = true;
+                    break;
+                default:
+                    form3.DefaultModeRadio.Checked = true;
+                    break;
+            }
+        }
     }
 }
