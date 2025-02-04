@@ -1,4 +1,4 @@
-﻿/*  Image Inspector code
+/*  Image Inspector code
  *  
  *  The Outforce O3D Engine Asset Tool.
  *  Designed by:        Krisztian Kispeti
@@ -22,6 +22,7 @@ using OutforceFileStruct;
 using System.Configuration;
 using System.Drawing.Text;
 using System.Diagnostics.Eventing.Reader;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AssetTool
 {
@@ -47,8 +48,6 @@ namespace AssetTool
 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(imgFile.IMGFILE.GetSupportedImageFormats());      //  imgFime.cs
-            // this.comboBox1.Items.AddRange(new object[] { "Bitmap (*.bmp)", "JPEG (*.jpeg)", "JPG (*.jpg)", "GIF (*.gif)", "PNG (*.png)", "TIFF (*.tiff)", "HEIF (*.heif)","ICON (*.icon)", "WMF (*.wmf)" // Original
-            //});   // Original
 
             this.KeyDown += new KeyEventHandler(Form6_KeyDown);
             this.KeyPreview = true;
@@ -127,6 +126,9 @@ namespace AssetTool
 
         private void Form6_Load(object sender, EventArgs e)
         {
+            //  Apply theme
+            ApplyTheme.SetTheme(this);
+
             checkBox1.Checked = true;
         }
 
