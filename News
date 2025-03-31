@@ -1,3 +1,10 @@
+2025.03.31, 19:33:
+
+Hello, everyone! I've started working on fixes for V 1.2.3 RC3! I've resolved almost all the OPF archive-related issues. Now, you can extract the 
+archive without any problems! For the classes section files, my program can now extract them into their correct directories! I hope to apply the 
+same fix for the image files as well. So, it seems like the mystery of the OPF archive is solved!
+
+
 2025.03.24, 22:05:
 
 Version V. 1.2.3 RC3 is out on Reshax, Moddb and on our Discord server!
