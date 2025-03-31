@@ -1,3 +1,51 @@
+{Version V1.2.3 RC4}
+
+[HOTFIX:]
+
+*	Full support for the *.opf archive (reading - extracting).
+*	Improved Console for the opf archive
+*	Doublicated filenames fixed
+*	Folders stored in the opf archive: Finally solved an archive reading - extracting
+-related issue. The classes section files will be extracted in the correct directories.
+
+//	PREVIOUS EDITIONS
+
+{Version V1.2.3 RC3}
+
+[ADDITIONS:]
+
++	Minitray has been added!
++	Now the program comes with an installer that contains the MapDataEditor and the
+	updated version of MediaCenter integrated in the O3D tool.
+
+[IMPROVEMENTS:]
+
+!	Code cleaned.
+!	Each forms are redesigned, so they're more compatible for the Theme Manager.
+!	Console is more powerful than previously, available on each forms.
+!	SyntaxChecker visual settings is now available! You can customize the visual of 
+	the component.
+!	Improved Theme manager code and configuration load method.
+
+[FIXES:]
+
+*	Fixed BoxBuilder issues. There was a folder-subfolder related issue that caused
+	that you can not extract the archives created by BoxBuilder which contains folders
+	and / or subfolders. Now the program can fully support and extract the contant of
+	the *.box archive you created. Folders, subfolders are not an issue anymore!
+
+*	Fixed an issue that caused overflow when trying to load the *.box archive after I
+	updated and cleaned the code.
+*	A progressBar-related issue has been fixed.
+
+*	Fixed Box extractor - loader code.
+*	Fixed the Console form, it won't open again after it is already opened once.
+*	There was a Theme manager-related issue that caused that the theme did not
+	changed for the ProgSettings form automatically.
+*	OMS Editor received some icons.
+
+//	PREVIOUS EDITIONS
+
 {Version V1.2.3 RC1}
 2025.02.04, 23:05.
 
