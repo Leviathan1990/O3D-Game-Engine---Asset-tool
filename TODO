@@ -1,44 +1,29 @@
-/*
-*  The Outforce - O3D Game Engine Asset tool.
-*/
-=
+//							The Outforce - O3D Game Engine Asset tool.
+										        V 1.2.3.RC4
+//								    Upcoming updates 1.2.3 Final.
 
-Upcoming updates / features in a nutshell (V1.2.X)
-=
+// OMS Editor:
++	Open - Save opened, modified *.oms | *.cfg files ( auto modified archive offset, size etc recalculation).
 
-Program:
+// Settings:
++	Implementation of Syntax-checker + Highlighter fix
++	Implementation of Language selector
 
-+ Improved syntax-checker for the OMS editor
-+ Improve Finder.
+// Archive manipulator (Edit or Main form)
++	Add | Replace | Rename | Remove | Backup | file(s), node(s) (folder(s) | child-node(s) (sub-folder(s)) | save modified archive (auto modified archive offset, size etc. recalculation).
 
-PackedProject.opf asset container archive:
+// Implementation of MediaCenter
++	MediaCenter and O3D asset tool will be merged on a new form, so you will be able to play *.mp3 | *.bik files
 
-+ Parser for the classes section files.
-+ OPF extractor - builder.
+// Installer
++	Installer
 
-[FOR OPENED *.BOX archives]:
-=
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-+ Add Node / Childnode (folders) to the opened archive
-+ Add file(s) to the opened archive
-+ Add replace file for the archives
-+ Add remove file function for archives.
-+ Add clear Node/childnode (folders) function
-+ Archive rename + backup function
+//	Upcoming updates for Version 1.3 Final
 
-[MISC]:
-=
-+ Installer + Minitray
+// Unit Developer Tool (for assets)
++	Opf extractor - builder - parser for the classes section files (.CBaseClass | .CGridMember | .CUnit | .CUnitWeapon)
 
-[PROGRAM IMPROVEMENTS AND FIXES]:
-=
-
-Fix:	On the Form1, fix toolstriplabels for the *.opf archive (Archive offset, selected file offset and size)
-Fix:	On the Image Inspector form, fix toolstripLabels for the *.opf stuffs
-Fix:	OPFLoader code (there are around 2000 files in the *.opf arcive less than 800 could be loaded...
-
-[DOWNLOAD CENTER IMPROVEMENTS]:
-=
-*Fix progressbar-related issues.
-+Implement Filter for filetypes.
-*Fix SSPI-related issues.
+Fix: Extract images from opf archive in their own folders. (Same fix as Classes section files).
+Paths: \Images\Spelplanstexturer\Effects\Pressaure_weave
