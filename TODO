@@ -24,6 +24,3 @@
 
 // Unit Developer Tool (for assets)
 +	Opf extractor - builder - parser for the classes section files (.CBaseClass | .CGridMember | .CUnit | .CUnitWeapon)
-
-Fix: Extract images from opf archive in their own folders. (Same fix as Classes section files).
-Paths: \Images\Spelplanstexturer\Effects\Pressaure_weave
