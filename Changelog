@@ -6,7 +6,8 @@
 *	Improved Console for the *.opf archive
 *	Doublicated filenames fixed
 *	Folders stored in the opf archive: Finally solved an archive reading-extracting-
-	related issue. From now the classes section files will be extracted in the correct directories.
+	related issue. From now the classes section files and the image files  will be extracted 
+	in the correct directories.
 
 [Additional fixes:]
 
