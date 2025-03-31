@@ -3,10 +3,16 @@
 [HOTFIX:]
 
 *	Full support for the *.opf archive (reading - extracting).
-*	Improved Console for the opf archive
+*	Improved Console for the *.opf archive
 *	Doublicated filenames fixed
-*	Folders stored in the opf archive: Finally solved an archive reading - extracting
--related issue. The classes section files will be extracted in the correct directories.
+*	Folders stored in the opf archive: Finally solved an archive reading-extracting-
+	related issue. From now the classes section files will be extracted in the correct directories.
+
+[Additional fixes:]
+
+*	toolStriplabel-related issues for the OPF archive are fixed! Now the program will
+	display archive name, offset, selected file offset, size etc. correctly
+*	On the Image Inspector form, toolstripLabels issues for the *.opf have been fixed.
 
 //	PREVIOUS EDITIONS
 
