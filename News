@@ -1,3 +1,12 @@
+2025.04.13, 22:25:
+
+Hey everyone! Today I’ve just finished updating the native Linux version of the O3D tool — but there’s still a lot to do. Next, I need to update 
+the Windows version of O3D by fixing some bugs, implementing missing features, and finishing the porting process. After that, I’ll move on to 
+updating the MapDataEditor tool and porting it to Linux using Qt Creator. Fortunately, I’ve solved the issues with reading the OPF archive, so now 
+we can access the full contents of the PackedProject.opf file. This will make using the assets much easier in the MapDataEditor as well.
+
+More updates coming soon!
+
 2025.03.31, 19:33:
 
 Hello, everyone! I've started working on fixes for V 1.2.3 RC3! I've resolved almost all the OPF archive-related issues. Now, you can extract the 
