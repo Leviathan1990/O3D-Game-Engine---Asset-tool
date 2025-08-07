@@ -83,33 +83,27 @@ website link: www.theoutforce.hu.
 Regards, Krisztian Kispeti.
 
 2024.09.09, 23:55:
-Adding official patches, cutcontents, my mappack to the Updater database. From now you can download all of these files. Also started to 
-working on a cool website for the game and my tools!
+Adding official patches, cutcontents, my mappack to the Updater database. From now you can download all of these files. Also started to working on a cool website for the game and my tools!
 
 2024.09.05, 22:32:
-Updater tool has been updatad again.
-*There were download-related errors in the code that I finally managed to fix.
+Updater tool has been updatad again. *There were download-related errors in the code that I finally managed to fix.
 
 2024.09.04, 14:28:
-O3D Game engine asset tool updater has been updated!
-*Now it has much more functions, which is well implemented!
+O3D Game engine asset tool updater has been updated! *Now it has much more functions, which is well implemented!
 
 2024.09.04, 16:17:
-BoxBuilder improvements started!
-*Working on another great external tool in with you can build / patch the *.box archives faster than ever!
+BoxBuilder improvements started! *Working on another great external tool in with you can build / patch the *.box archives faster than ever!
 
 2024.09.04, 16:06:
 Updater tool has been updated! Fixed all the download-related issues!
 
 2024.09.04, 14:12:
-O3D Engine Updater tool has been added!
-*You can check for updates with this tool any time!
+O3D Engine Updater tool has been added! *You can check for updates with this tool any time!
 
 2024.09.04, 01:15:
 Mediacenter tool has been added the O3D main project!
 
 2024.09.03, 23:51:
-Project has been uploaded to github!
-https://github.com/Leviathan1990/O3D-Game-Engine---Asset-tool/tree/main
+Project has been uploaded to github! https://github.com/Leviathan1990/O3D-Game-Engine---Asset-tool/tree/main
 
 Program has been updated to version 1.2 beta!
