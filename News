@@ -1,3 +1,34 @@
+2025.08.08, 02:27:
+Hello again, everyone! Dev guy here! I’m back with some exciting news!
+As many of you already know, I’ve begun working on the update for the MapDataEditor tool and a fix for the Download Center, specifically addressing the SSPI-related issue. The great news is that I'm now planning 
+to merge everything—MapDataEditor, Download Center—into a single, unified program, which will be packaged with an installer using Inno Setup. This is shaping up to be the greatest project I’ve ever created for my 
+beloved game! 
+
+What’s coming in the next version?
+1.) A redesigned Welcome screen with additional information.
+2.) Live feeds pulled directly from my website, GitHub, and possibly even Discord.
+3.) New icons to replace the old ones.
+4.) Progress on the *archive manipulator for .box archives is well underway.
+5.) A completely revamped Update Center, now integrated with the O3D engine tool and the latest MapDataEditor version.
+
+OMS Editor Updates
+I'm also working on updates for the OMS Editor:
+
+1.) The syntax highlighter will be fixed.
+2.) The suggestion box, already available in MapDataEditor, will finally be implemented.
+3.) The Settings form will be updated and improved, including:
+4.) Language selector
+5.) Theme manager
+6.) Syntax checker
+7.) The system that loads and creates configuration files will also be improved for better reliability and flexibility.
+
+Current Challenges
+Unfortunately, there are still some major challenges I need to overcome before release. One of the most complex tasks is implementing the Box Archive Manager and finding the appropriate icons for it. It’s proving to be 
+quite difficult and time-consuming, so I’ll need more time to ensure everything works perfectly.
+
+Thanks for your continued support—I’m really excited about what’s coming next!
+
+
 2025.04.13, 22:25:
 Hey everyone! 
 Today I’ve just finished updating the native Linux version of the O3D tool — but there’s still a lot to do. Next, I need to update the Windows version of O3D by fixing some bugs, implementing missing features, 
