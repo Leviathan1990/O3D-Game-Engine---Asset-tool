@@ -1,8 +1,7 @@
 2025.08.08, 02:27:
 Hello again, everyone! Dev guy here! I’m back with some exciting news!
-As many of you already know, I’ve begun working on the update for the MapDataEditor tool and a fix for the Download Center, specifically addressing the SSPI-related issue. The great news is that I'm now 
-planning to merge everything—MapDataEditor, Download Center—into a single, unified program, which will be packaged with an installer using Inno Setup. This is shaping up to be the greatest project I’ve 
-ever created for my beloved game! 
+As many of you already know, I’ve begun working on the update for the MapDataEditor tool and a fix for the Download Center. The great news is that I'm now planning to merge everything—MapDataEditor, Download 
+Center—into a single, unified program, which will be packaged with an installer using Inno Setup. This is shaping up to be the greatest project I’ve ever created for my beloved game! 
 
 What’s coming in the next version?
 1.) A redesigned Welcome screen with additional information.
