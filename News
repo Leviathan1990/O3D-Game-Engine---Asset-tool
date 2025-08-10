@@ -61,10 +61,11 @@ MapDataEditor tool too! For more information, please visit my website: www.theou
 2025.02.03, 15:46:
 *** Project improvements: ***
 
-I finally managed to implement a console for the program, as well as added SuggestionBox, ToolTip, SyntaxChecker and fixed Highlighter for the OMSEDITOR! I also implemented a Theme manager, which allows you to 
-activate the Dark, Light or the Default theme mode for the forms! I have removed the vast of groupboxes, and added splitContainers. Also improved the settings form with the theme manager (language selection, 
-box-building method and more will be added soon!). [MapDataEditor:] I promised you that I'm working on a tool that allows you to edit, create MapData.box archives and the files inside faster. Now the tool is still
-in development status, but at least operational! More info on the website: www.theoutforce.hu. [Knowing issues]: I know about the issues that will be fixed in the next update. More info soon!
+I finally managed to implement a console for the program, as well as added SuggestionBox, ToolTip, SyntaxChecker and fixed Highlighter for the OMSEDITOR! I also implemented a Theme manager, which allows
+you to activate the Dark, Light or the Default theme mode for the forms! I have removed the vast of groupboxes, and added splitContainers. Also improved the settings form with the theme manager 
+(language selection, box-building method and more will be added soon!). [MapDataEditor:] I promised you that I'm working on a tool that allows you to edit, create MapData.box archives and the files 
+inside faster. Now the tool is still in development status, but at least operational! More info on the website: www.theoutforce.hu. [Knowing issues]: I know about the issues that will be fixed in the 
+next update. More info soon!
 
 2024.10.10, 19:55:
 *** Project improvements: ***
