@@ -67,7 +67,8 @@ in development status, but at least operational! More info on the website: www.t
 
 
 2024.10.10, 19:55:
-Project improvements:
+*** Project improvements: ***
+=
 Finally, I managed to fix the treeView-related node(s) (folder(s), and childnode(s) (subfolder(s) issues. You can create *.box archives that contains file(s) folder(s) and subfolder(s)! You can also remove all the 
 items (files) you added in the treeView components, remove selected file and / or the selected folder(s) or subfolder(s) too! I also improved BoxBuilder with a richTextBox component which will warn you anytime if 
 a file is missiong or an error occured, and you can see what file(s) and folder(s) or subfolder(s) you have created and created the archive well! The only part of this code that will be fixed and improved the 
