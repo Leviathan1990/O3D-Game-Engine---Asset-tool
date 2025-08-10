@@ -74,7 +74,7 @@ a file is missiong or an error occured, and you can see what file(s) and folder(
 MapData editor mode. More info soon. Stay tuned, Cadets!
 
 2024.10.08, 15:21:
-Project Improvements:
+*Project Improvements:
 I have almost finished the implementation of the BoxBuilder tab, and added a MapData.box checker. It will be useful, if you want to design Skirmish maps. It will warn you if you forgot to add some necessary file(s) 
 for your new skirmish archive.
 
@@ -86,8 +86,8 @@ powerful than my previous tools! Also working on a fix for the Outforce Download
 2024.09.18, 23:34:
 Localisation: Hungarian!
 Hello, you guys, this article is only in Hungarian.
-A mai nappal elkezdtem a teljes magyarnyelvű lokalizációt elkészíteni. Minden szöveget le fogok magyarra fordítani a játékban. Ha az megvan, akkor jönnek a küldetések, jelenleg a Tutorialt fordítom, a demo mappal már 
-végeztem is! Aztán jönnek a kampány mappok! Ha az megvan, megnézem, mégis mi a náthás picsát tudnék csinálni a GUI-val is! Mára ennyi. Ja, és olvasd a weblapunkat: www.theoutforce.hu!
+A mai nappal elkezdtem a teljes magyarnyelvű lokalizációt elkészíteni. Minden szöveget le fogok magyarra fordítani a játékban. Ha az megvan, akkor jönnek a küldetések, jelenleg a Tutorialt fordítom, a demo
+mappa már végeztem is! Aztán jönnek a kampány mappok! Ha az megvan, megnézem, mégis mi a náthás picsát tudnék csinálni a GUI-val is! Mára ennyi. Ja, és olvasd a weblapunkat: www.theoutforce.hu!
 
 2024.09.16, 21:02:
 Website updated, new contents are available for download. In addition, I also updated the Asset tool and the Download center tool Both will be uploaded to our website soon.
